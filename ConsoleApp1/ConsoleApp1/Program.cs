@@ -15,19 +15,19 @@ namespace ConsoleApp1
     class Aquarium
     {
         private List<Fish> _fishes = new List<Fish>();
-        private List<Fish> _species = new List<Fish>();
+        private List<string> _species = new List<string>();
         private int _capacity = 4;
 
         public void Work()
         {
             bool _isWorking = true;
-            CreateNewSpecies(_species);
+            _species = CreateNewSpecies();
 
             while (_isWorking)
             {
                 ShowFishesList();
                 UpdateFishesAge();
-                DeleteDeadFish();
+                DeleteDeadFishes();
                 Console.WriteLine();
                 Console.WriteLine("1. Добавить рыбу в аквариум");
                 Console.WriteLine("2. Убрать рыбу из аквариума");
@@ -40,7 +40,7 @@ namespace ConsoleApp1
                         AddNewFish();
                         break;
                     case "2":
-                        DeleteFishes();
+                        DeleteFish();
                         break;
                     case "3":
                         _isWorking = false;
@@ -58,7 +58,7 @@ namespace ConsoleApp1
             {
                 for (int i = 0; i < _species.Count; i++)
                 {
-                    Console.WriteLine($"{i+1}. {_species[i].Species}");
+                    Console.WriteLine($"{i+1}. {_species[i]}");
                 }
 
                 Console.WriteLine("Выберите рыбу");
@@ -69,7 +69,7 @@ namespace ConsoleApp1
                 {
                     if (number > 0 && number <= _species.Count)
                     {
-                        _fishes.Add(new Fish(_species[number - 1].Species));
+                        _fishes.Add(new Fish(_species[number - 1]));
                     }
                     else
                     {
@@ -91,17 +91,18 @@ namespace ConsoleApp1
             }
         }
 
-        private List<Fish> CreateNewSpecies(List<Fish> fish)
+        private List<string> CreateNewSpecies()
         {
-            _species.Add(new Fish("Золотая рыбка"));
-            _species.Add(new Fish("Гуппи"));
-            _species.Add(new Fish("Сом"));
-            _species.Add(new Fish("Скат"));
-            _species.Add(new Fish("Пиранья"));
-            return fish;
+            List<string> list = new List<string>();
+            list.Add(new string("Золотая рыбка"));
+            list.Add(new string("Гуппи"));
+            list.Add(new string("Сом"));
+            list.Add(new string("Скат"));
+            list.Add(new string("Пиранья"));
+            return list;
         }
 
-        private void DeleteFishes()
+        private void DeleteFish()
         {
             if (_fishes.Count > 0)
             {
@@ -153,7 +154,7 @@ namespace ConsoleApp1
             }             
         }
 
-        private void DeleteDeadFish()
+        private void DeleteDeadFishes()
         {
             int dyingAge = 11;
 
