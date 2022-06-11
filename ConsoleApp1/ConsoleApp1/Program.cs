@@ -15,13 +15,13 @@ namespace ConsoleApp1
     class Aquarium
     {
         private List<Fish> _fishes = new List<Fish>();
-        private List<Fish> _fishesList = new List<Fish>();
+        private List<Fish> _species = new List<Fish>();
         private int _capacity = 4;
 
         public void Work()
         {
             bool _isWorking = true;
-            AddToList();
+            CreateNewSpecies(_species);
 
             while (_isWorking)
             {
@@ -56,9 +56,9 @@ namespace ConsoleApp1
         {
             if (_fishes.Count <= _capacity)
             {
-                for (int i = 0; i < _fishesList.Count; i++)
+                for (int i = 0; i < _species.Count; i++)
                 {
-                    Console.WriteLine($"{i+1}. {_fishesList[i].Species}");
+                    Console.WriteLine($"{i+1}. {_species[i].Species}");
                 }
 
                 Console.WriteLine("Выберите рыбу");
@@ -67,9 +67,9 @@ namespace ConsoleApp1
 
                 if (int.TryParse(input, out number))
                 {
-                    if (number - 1 <= _fishesList.Count)
+                    if (number > 0 && number <= _species.Count)
                     {
-                        _fishes.Add(new Fish(_fishesList[number - 1].Species));
+                        _fishes.Add(new Fish(_species[number - 1].Species));
                     }
                     else
                     {
@@ -91,33 +91,41 @@ namespace ConsoleApp1
             }
         }
 
-        private void AddToList()
+        private List<Fish> CreateNewSpecies(List<Fish> fish)
         {
-            _fishesList.Add(new Fish("Золотая рыбка"));
-            _fishesList.Add(new Fish("Гуппи"));
-            _fishesList.Add(new Fish("Сом"));
-            _fishesList.Add(new Fish("Скат"));
-            _fishesList.Add(new Fish("Пиранья"));
+            _species.Add(new Fish("Золотая рыбка"));
+            _species.Add(new Fish("Гуппи"));
+            _species.Add(new Fish("Сом"));
+            _species.Add(new Fish("Скат"));
+            _species.Add(new Fish("Пиранья"));
+            return fish;
         }
 
         private void DeleteFishes()
         {
-            ShowFishesList();
-            Console.WriteLine("Какую рыбу вы хотите убрать?");
-            string input = Console.ReadLine();
-            int number;
-
-            if (int.TryParse(input, out number))
+            if (_fishes.Count > 0)
             {
-                if (number <= _fishes.Count)
+                ShowFishesList();
+                Console.WriteLine("Какую рыбу вы хотите убрать?");
+                string input = Console.ReadLine();
+                int number;
+
+                if (int.TryParse(input, out number))
                 {
-                    _fishes.RemoveAt(number - 1);
-                    Console.Clear();
+                    if (number > 0 && number <= _fishes.Count)
+                    {
+                        _fishes.RemoveAt(number - 1);
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка");
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("Ошибка");
-                }
+            }
+            else
+            {
+                Console.WriteLine("В аквариуме пусто");
             }
         }
 
@@ -187,8 +195,8 @@ namespace ConsoleApp1
             Random random = new Random();
             int minYears = 1;
             int maxYears = 6;
-            Years = random.Next(minYears,maxYears);
-            return Years;
+            int age = random.Next(minYears,maxYears);
+            return age;
         }
     }
 }
